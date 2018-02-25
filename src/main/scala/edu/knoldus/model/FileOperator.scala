@@ -1,10 +1,9 @@
 package edu.knoldus.model
 
 
-import java.util.Date
-
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
+import org.joda.time.DateTime
 
 case class FileOperator() {
 
@@ -16,9 +15,8 @@ case class FileOperator() {
     .map { x => x.split('#') }
   val salesFormatted: RDD[(Int, Int, Int, Long, Long)] = salesRDD.map {
     array => {
-
-      val date = new Date(array(0).toLong * 1000L)
-      (date.getYear, date.getMonth, date.getDay, array(1).toLong, array(2).toLong)
+      val dateTime = new DateTime(array(0).toLong * 1000L)
+      (dateTime.getYear, dateTime.getMonthOfYear, dateTime.getDayOfMonth, array(1).toLong, array(2).toLong)
     }
   }
   val customerFormatted: RDD[(Long, String)] = customerRDD.map {
